@@ -26,7 +26,7 @@ void openFile(){
 	
 }
 
-int saveFile(int saveBalance){
+void saveFile(int saveBalance){
 	fptr = fopen("aacountdata.dat","wb");
 	mny.current = saveBalance;
 	fwrite(&mny.current,sizeof(struct money),1,fptr);
@@ -83,7 +83,7 @@ void printExit(){
 }
 
 
-int processWith(int wiithdrawal){
+void processWith(int wiithdrawal){
 	fptr = fopen("aacountdata.dat","rb");
 	fread(&mny.current,sizeof (struct money),1,fptr);
 	mny.balance = mny.current - mny.with;
