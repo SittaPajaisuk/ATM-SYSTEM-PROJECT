@@ -9,24 +9,23 @@ struct money{
 	int with;
 	int depos;
 	int current;
-	int balance;
-	int cont;
+	int newbalance;
 };
 
 struct money mny;
 
-void openFile(){
+void checkFile(){
 	fptr = fopen("aacountdata.dat","rb");
 	if (fptr == NULL){
 		fptr = fopen("aacountdata.dat","wb");
-		mny.current = 0;
+		mny.current = 1000;
 		fwrite(&mny.current,sizeof(struct money),1,fptr);
 	}
 	fclose(fptr);
 	
 }
 
-void saveFile(int saveBalance){
+void saveFile(int *saveBalance){
 	fptr = fopen("aacountdata.dat","wb");
 	mny.current = saveBalance;
 	fwrite(&mny.current,sizeof(struct money),1,fptr);
@@ -38,6 +37,7 @@ struct choice{
 	int withdrawal;
 	int deposit;
 	int check;
+	int cont;
 };
 
 struct choice ch;
@@ -82,16 +82,23 @@ void printExit(){
 	printf("-----------------------------------------------\n");
 }
 
+void printError(){
+	printf("######  ######  ######    ######   ######   ##  ##\n");
+	printf("##      ##   ## ##   ##  ##    ##  ##   ##  ##  ##\n");
+	printf("######  ######  ######   ##    ##  ######   ##  ##\n");
+	printf("##      ##  ##  ##  ##   ##    ##  ##  ##\n");
+	printf("######  ##   ## ##   ##   ######   ##   ##  ##  ##\n");
+}
 
-void processWith(int wiithdrawal){
+void processWith(int withdrawal){
 	fptr = fopen("aacountdata.dat","rb");
 	fread(&mny.current,sizeof (struct money),1,fptr);
-	mny.balance = mny.current - mny.with;
-	saveFile(mny.balance);
+	mny.newbalance = mny.current - mny.with;
+	saveFile(mny.newbalance);
 	printf("--------------------------------------------\n");
 	printf("Withdrawal Balance: %d\n",mny.with);
 	printf("--------------------------------------------\n");
-	printf("Current Balance : %d\n",mny.balance);
+	printf("Current Balance : %d\n",mny.current);
 	printf("--------------------------------------------\n");
 	fclose(fptr);
 	Sleep(2000);
@@ -100,19 +107,19 @@ void processWith(int wiithdrawal){
 	printf("NO[0]\n");
 	printf("--------------------------------------------\n");
 	printf("Enter your choice : ");
-	scanf("%d",&mny.cont);
-	if (mny.cont == 1){
+	scanf("%d",&ch.cont);
+	if (ch.cont == 1){
 		system("cls");
 		menuATM();
 	}
 	
-	else if(mny.cont == 0){
+	else if(ch.cont == 0){
 		system("cls");
 		printExit();
 	}
 }
 
-void cheakWith(){
+void checkWith(){
 	fptr = fopen("aacountdata.dat","rb");
 	fread(&mny.current,sizeof (struct money),1,fptr);
 	if (mny.current < mny.with)
@@ -150,39 +157,43 @@ void cashWith(){
 		case 1:
 			system("cls");
 			mny.with = 100;
-			cheakWith();
+			checkWith();
 			break;
 		case 2:
 			system("cls");
 			mny.with = 400;
-			cheakWith();
+			checkWith();
 			break;
 		case 3:
 			system("cls");
 			mny.with = 500;
-			cheakWith();
+			checkWith();
 			break;
 		case 4:
 			system("cls");
 			mny.with = 900;
-			cheakWith();
+			checkWith();
 			break;
 		case 5:
 			system("cls");
 			mny.with = 1000;
-			cheakWith();
+			checkWith();
 			break;
 		case 6:
 			system("cls");
 			mny.with = 5000;
-			cheakWith();
+			checkWith();
 			break;
 		case 7:
 			system("cls");
 			printf("-----------------------\n");
 			printf("Enter the amount : ");
 			scanf("%d",&mny.with);
-			cheakWith();
+			checkWith();
+			break;
+		default:
+			system("cls");
+			printError();
 			break;
 	}
 }
@@ -190,12 +201,12 @@ void cashWith(){
 void processDepos(int Depos){
 	fptr = fopen("aacountdata.dat","rb");
 	fread(&mny.current,sizeof (struct money),1,fptr);
-	mny.balance = mny.current + mny.depos;
-	saveFile(mny.balance);
+	mny.newbalance = mny.current + mny.depos;
+	saveFile(mny.newbalance);
 	printf("--------------------------------------------\n");
 	printf("Deposit Balance: %d\n",mny.depos);
 	printf("--------------------------------------------\n");
-	printf("Current Balance : %d\n",mny.balance);
+	printf("Current Balance : %d\n",mny.current);
 	printf("--------------------------------------------\n");
 	fclose(fptr);
 	Sleep(2000);
@@ -204,15 +215,19 @@ void processDepos(int Depos){
 	printf("NO[0]\n");
 	printf("--------------------------------------------\n");
 	printf("Enter your choice : ");
-	scanf("%d",&mny.cont);
-	if (mny.cont == 1){
+	scanf("%d",&ch.cont);
+	if (ch.cont == 1){
 		system("cls");
 		menuATM();
 	}
 	
-	else if(mny.cont == 0){
+	else if(ch.cont == 0){
 		system("cls");
 		printExit();
+	}
+	else{
+		system("cls");
+		printError();
 	}
 }
 
@@ -269,6 +284,10 @@ void cashDepos(){
 			system("cls");
 			processDepos(mny.depos);
 			break;
+		default:
+			system("cls");
+			printError();
+			break;
 	}
 }
 
@@ -287,15 +306,19 @@ void checkBal(){
 	printf("NO[0]\n");
 	printf("--------------------------------------------\n");
 	printf("Enter your choice : ");
-	scanf("%d",&mny.cont);
-	if (mny.cont == 1){
+	scanf("%d",&ch.cont);
+	if (ch.cont == 1){
 		system("cls");
 		menuATM();
 	}
 	
-	else if(mny.cont == 0){
+	else if(ch.cont == 0){
 		system("cls");
 		printExit();
+	}
+	else{
+		system("cls");
+		printError();
 	}
 	
 }
@@ -327,10 +350,13 @@ void menuATM(){
 		case 4:
 			system("cls");
 			printExit();
+			break;
+		default:
+			system("cls");
+			printError();
 			break;		
 	}
 }	
-
 void login(){
 	char name[50],password[10];
 	printf(" Enter Name : ");
@@ -340,7 +366,7 @@ void login(){
 	if (strcmp(name,"admin") == 0 && strcmp(password,"1234") == 0){
 		system("cls");
 		printWelcome();
-		openFile();
+		checkFile();
 		Sleep(1500);
 		system("cls");
 		menuATM();
@@ -356,7 +382,7 @@ void login(){
 			if (strcmp(name,"admin") == 0 && strcmp(password,"1234") == 0){
 				system("cls");
 				printWelcome();
-				openFile();
+				checkFile();
 				Sleep(1500);
 				system("cls");
 				menuATM();
