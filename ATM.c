@@ -25,7 +25,7 @@ void checkFile(){
 	
 }
 
-void saveFile(int *saveBalance){
+void saveFile(int saveBalance){
 	fptr = fopen("aacountdata.dat","wb");
 	mny.current = saveBalance;
 	fwrite(&mny.current,sizeof(struct money),1,fptr);
@@ -243,7 +243,7 @@ void cashDepos(){
 	printf("6. 5000 Baht\n");
 	printf("7.Specify the amount manually\n");
 	printf("----------------------------\n");
-	printf("Enter your choice(1-4): ");
+	printf("Enter your choice(1-7): ");
 	scanf("%d",&ch.deposit);
 	switch(ch.deposit){
 		case 1:
@@ -357,8 +357,10 @@ void menuATM(){
 			break;		
 	}
 }	
+
 void login(){
 	char name[50],password[10];
+	printATM();
 	printf(" Enter Name : ");
 	scanf("%s", name);
 	printf(" Enter Password : ");
@@ -373,7 +375,7 @@ void login(){
 	}
 	else{
 		system("cls");
-		for (i=0;i<3;i++){
+		for (i=1;i<3;i++){
 			printIncorrect();
 			printf("Enter Name : ");
 			scanf("%s", name);
