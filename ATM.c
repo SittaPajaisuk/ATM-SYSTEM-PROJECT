@@ -193,6 +193,7 @@ void cashWith(){
 			printf("-----------------------\n");
 			printf("Enter the amount : ");
 			scanf("%d",&mny.with);
+			system("cls");
 			checkWith();
 			break;
 		default:
