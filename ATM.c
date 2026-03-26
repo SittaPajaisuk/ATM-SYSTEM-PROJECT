@@ -117,6 +117,10 @@ void processWith(int withdrawal){
 		system("cls");
 		printExit();
 	}
+	else{
+		system("cls");
+		printError();
+	}	
 }
 
 void checkWith(){
